@@ -1,37 +1,22 @@
-module(input[31:0] estado_pc,
+module somadorPC(input[31:0] estado_pc,
 input clock,
 input reset,
-output[31:0] soma,
-output carryOut)
+output[31:0] endereco_soma)
 
-    parameter prox_instrucao = 32;//Tamanho em bits da próxima instrução
-
-    function [32:0] somador;//33 bits função do carry out
-        input [31:0] a,b;
-        reg [31:0] resultado, cin;
-        integer i;
-        resultado = 33b'0;
-        cin = 32b'0;
-        begin
-            for(i = 0; i < 32; i = i + 1) begin
-                if((a[i] == 1 & b[i] == 1)|(a[i]==1 & cin[i]==1)|(b[i]==1 & cin[i]==1))
-                begin cin[i] = 1; end;//se há pelos 2 bits iguais a 1, carry in recebe 1
-                resultado[i] = a[i] ^ b[i] ^ cin[i];
-                resultado[i+1] = ((a[i]&b[i])|(a[i]&cin[i])|(b[i]&cin[i]));
-            end;
-            somador = resultado;
-        end;
-    endfunction;
-
+    //reg [3:0] cont;
+    reg[31:0] soma;
     always@(posedge clock or posedge reset) begin
+      //cont = (cont+1)%10;
       if(reset) begin
-        soma <= 0;
-        carryOut <= 0;
+        //cont <= 0;
+        soma <= 32'b00000000000000000000000000000001;
       end
 
       else begin
-        {carryOut,soma} = somador(estado_pc,prox_instrucao);//opera a função do somador completo
+        //if(cont % 10 == 1) begin
+        soma <= estado_pc + 32'b00000000000000000000000000000001;
+        //end
       end
     end
-        
+    assign endereco_soma = soma;   
 endmodule
