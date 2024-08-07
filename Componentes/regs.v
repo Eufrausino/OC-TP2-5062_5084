@@ -1,11 +1,13 @@
-module regs(input[5:0] readReg1,
- input[4:0] readReg2,
- input[4:0] writeReg,
- input[31:0] writeData,
+module regs(
+ input clock,
+ input reset,
  input regWrite,
- input clock, input reset,
- output[31:0] readData1,
- output[31:0] readData2)
+ input [4:0] readReg1,
+ input [4:0] readReg2,
+ input [4:0] writeReg,
+ input [31:0] writeData,
+ output [31:0] readData1,
+ output [31:0] readData2);
     //Pegar o conteúdo do readReg e colocar em readData
     //Salvar writeData em algum dos regs
 
@@ -17,7 +19,7 @@ module regs(input[5:0] readReg1,
     integer i;
 
     initial begin
-        $readmemb("regs.bin",(regs));
+        $readmemb("registradores.bin",(regs));
     end
 
     always@(posedge clock or posedge reset) begin
@@ -27,7 +29,7 @@ module regs(input[5:0] readReg1,
             //     regs[rd_reg] <= write_data;
         //end
         //Se regwrite está ativo, é possível atualizar os registradores
-        if (regwrite == 1) begin regs[rd] <= writeData; end
+        if (regWrite == 1) begin regs[rd] <= writeData; end
 
         //Registrador de destino recebe a entrada respectiva entrada
         rd <= writeReg;
@@ -41,11 +43,11 @@ module regs(input[5:0] readReg1,
             //cont = 0;
             r1 <= 32'b00000000000000000000000000000000;
             r2 <= 32'b00000000000000000000000000000000;
-            initial begin
-                for(i = 0; i < 32; i = i + 1) begin
-                    regs[i] = i;
-                end
+    
+            for(i = 0; i < 32; i = i + 1) begin
+                regs[i] = i;
             end
+
         end
     end
     assign readData1 = r1;

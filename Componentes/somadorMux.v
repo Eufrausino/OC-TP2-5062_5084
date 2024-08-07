@@ -1,9 +1,9 @@
 module somadorMux(
-    input [31:0] estado_pc,
-    input [31:0] imm_gen,
     input clock,
     input reset,
-    output reg [31:0] entrada_mux
+    input [31:0] estado_pc,
+    input [31:0] imm_gen,
+    output [31:0] entrada_mux
 );
     //reg[3:0] cont;
     reg[31:0] soma;

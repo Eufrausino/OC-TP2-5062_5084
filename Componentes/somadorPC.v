@@ -1,7 +1,8 @@
-module somadorPC(input[31:0] estado_pc,
+module somadorPC(
 input clock,
 input reset,
-output[31:0] endereco_soma)
+input[31:0] estado_pc,
+output[31:0] endereco_soma);
 
     //reg [3:0] cont;
     reg[31:0] soma;

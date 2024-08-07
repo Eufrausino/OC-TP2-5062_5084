@@ -1,6 +1,10 @@
-module and(input branch, input alu_0,
-    input clock, input reset,
-    output saidaAnd)
+module and_module(
+    input wire clock,
+    input wire reset,
+    input wire branch, 
+    input wire alu_0,
+    output wire saidaAnd
+    );
 
     //reg[3:0] cont;
    reg AND;
