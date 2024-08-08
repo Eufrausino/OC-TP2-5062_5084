@@ -8,17 +8,23 @@ module mux2(clock, reset, aluSrc, readData2, imm, saidaMux2);
     output wire [31:0] saidaMux2;
 
     reg [31:0] saidaMux2_reg;
-    
-    always@(posedge clock) begin
-        if(aluSrc == 1'b0)begin
-            saidaMux2_reg <= readData2;
+    reg[3:0] cont;
+        always@(posedge clock) begin
+        cont <= (cont + 1) %10;
+        if (cont % 10 == 5) begin
+            if(aluSrc == 1'b0)begin
+                saidaMux2_reg <= readData2;
+            end
+            else begin
+                saidaMux2_reg <= imm;
+            end
         end
-        else begin
-            saidaMux2_reg <= imm;
+        if(reset) begin
+            cont <= 0;
+            saidaMux2_reg <= 32'b00000000000000000000000000000000;
         end
     end
 
     assign saidaMux2 = saidaMux2_reg;
 
-    
 endmodule

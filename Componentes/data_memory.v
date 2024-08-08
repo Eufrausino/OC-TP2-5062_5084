@@ -9,17 +9,25 @@ module data_memory(clock, reset, memWrite, memRead, address, writeData, readData
 
     reg[31:0] memoria[0:63];
     reg[31:0] readData_reg;
+    reg[3:0] cont;
 
     initial begin
         $readmemb("data_memory.bin", (memoria));
     end
 
     always @(posedge clock) begin
-        if(memWrite == 1'b1) begin
-            memoria[address] <= writeData;
+        cont = (cont+1)%10;
+        if(cont%10 == 5) begin
+            if(memWrite == 1'b1) begin
+                memoria[address] <= writeData;
+            end
+            else if(memRead == 1'b1) begin
+                readData_reg <= memoria[address];
+            end
         end
-        else if(memRead == 1'b1) begin
-            readData_reg <= memoria[address];
+        if(reset) begin
+            cont <=0;
+            readData_reg <= 32'b00000000000000000000000000000000;
         end
     end
 

@@ -18,7 +18,7 @@ module main();
 
     reg clock;
     reg reset;
-    reg [3:0] contador;
+    reg [3:0] cont;
 
     // fios
     wire [31:0] fio_enderecoPc;
@@ -75,13 +75,13 @@ module main();
     always #1 clock <= ~clock; //clock alterna seu estado a cada 1 unidade de tempo
 
     always@(posedge clock) begin
-		  if (!reset) contador = (contador+ 1) % 10; //quando reset não está ativo, incrementa o contador
+		  if (!reset) cont = (cont+ 1) % 10; //quando reset não está ativo, incrementa o cont
 	  end
     initial begin
 		
 		$dumpfile("main.vcd");
 		$dumpvars;
-		contador = 0;
+		cont = 0;
 		clock = 1'b0;
 		reset = 1'b1;
 		#10 reset = 1'b0; //depois de 10 uni de tempo reset é desativado

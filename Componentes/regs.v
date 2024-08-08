@@ -11,7 +11,7 @@ module regs(
     //Pegar o conteúdo do readReg e colocar em readData
     //Salvar writeData em algum dos regs
 
-    //reg[3:0] cont;
+    reg[3:0] cont;
     reg[31:0] regs [0:31];
     reg[4:0] rd;
     reg[4:0] r1;
@@ -23,15 +23,15 @@ module regs(
     end
 
     always@(posedge clock or posedge reset) begin
-        //cont = (cont + 1) % 10;
-        //if (cont % 10 == 0) begin
-            // if (regwrite == 1)
-            //     regs[rd_reg] <= write_data;
-        //end
-        //Se regwrite está ativo, é possível atualizar os registradores
-        if (regWrite == 1) begin regs[rd] <= writeData; end
+        cont = (cont + 1) % 10;
+        if (cont % 10 == 3) begin
+            if (regWrite == 1) begin
+                regs[writeReg] <= writeData;
+            end
+            //Se regwrite está ativo, é possível atualizar os registradores
+        end
 
-        //Registrador de destino recebe a entrada respectiva entrada
+         //Registrador de destino recebe a entrada respectiva entrada
         rd <= writeReg;
         //rs1 e rs2 recebem também suas respectivas entradas
         r1 <= regs[readReg1];
@@ -40,15 +40,15 @@ module regs(
         if(reset) begin
             //Se reset = 1, coloca os registradores no seu estado original.
             //Então, reg1 = 32'b00000000000000000000000000000001 e assim sucessivamente.
-            //cont = 0;
+            cont = 0;
             r1 <= 32'b00000000000000000000000000000000;
             r2 <= 32'b00000000000000000000000000000000;
     
             for(i = 0; i < 32; i = i + 1) begin
                 regs[i] = i;
             end
-
         end
+        regs[0] <= 32'b00000000000000000000000000000000;
     end
     assign readData1 = r1;
     assign readData2 = r2;
