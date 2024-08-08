@@ -14,33 +14,40 @@ module alu(clock, reset, aluControl, readData1, readData2, aluResult, zero);
     reg[3:0] cont;
 
     always@(posedge clock)begin
-        cont = (cont+1)%10;
-        if(cont%10 == 4) begin
-            if(aluControl == 4'b0010)begin
-            aluResult_reg <= readData1 + readData2;
-            zero_reg <= 1'b0;
-            end
-            if(aluControl == 4'b0000)begin
-                aluResult_reg <= readData1 & readData2;
-                zero_reg <= 1'b0;
-            end
-            if(aluControl == 4'b0001)begin
-                aluResult_reg <= readData1 | readData2;
-                zero_reg <= 1'b0;
-            end
-            if(aluControl == 4'b0110)begin
-                aluResult_reg <= readData1 << readData2;
-                zero_reg <= 1'b0;
-            end
-            if(aluControl == 4'b1000)begin
-                aluResult_reg <= readData1 - readData2;
-                zero_reg <= 1'b1;
-            end
-        end
-        if(reset) begin
+         if(reset) begin
             cont <= 0;
             aluResult_reg <=  32'b00000000000000000000000000000000;
-            zero_reg <= 1'b0;
+            zero_reg <= 1'b0;//CONFERIR
+        end
+        else begin
+            cont = (cont+1)%10;
+            if(cont%10 == 6) begin
+                if(aluControl == 4'b0010)begin
+                aluResult_reg <= readData1 + readData2;
+                //zero_reg <= 1'b0;
+                zero_reg <= (aluResult_reg == 32'b00000000000000000000000000000000) ? 1'b1 : 1'b0;
+                end
+                if(aluControl == 4'b0000)begin
+                    aluResult_reg <= readData1 & readData2;
+                    zero_reg <= (aluResult_reg == 32'b00000000000000000000000000000000) ? 1'b1 : 1'b0;
+                    //zero_reg <= 1'b0;
+                end
+                if(aluControl == 4'b0001)begin
+                    aluResult_reg <= readData1 | readData2;
+                    zero_reg <= (aluResult_reg == 32'b00000000000000000000000000000000) ? 1'b1 : 1'b0;
+                    //zero_reg <= 1'b0;
+                end
+                if(aluControl == 4'b0110)begin
+                    aluResult_reg <= readData1 << readData2[4:0];
+                    zero_reg <= (aluResult_reg == 32'b00000000000000000000000000000000) ? 1'b1 : 1'b0;
+                    //zero_reg <= 1'b0;
+                end
+                if(aluControl == 4'b1000)begin
+                    aluResult_reg <= readData1 - readData2;
+                    zero_reg <= (aluResult_reg == 32'b00000000000000000000000000000000) ? 1'b1 : 1'b0;
+                    //zero_reg <= 1'b1;
+                end
+            end
         end
     end
     

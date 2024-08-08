@@ -18,13 +18,15 @@ module instruction_memory(clock, reset, readAddress, instruction6_0, instruction
     initial $readmemb("entrada.bin", (memoriaInstrucao));
 
     always@(posedge clock)begin
-        cont = (cont+1)%10;
-        if(cont == 1) begin
-            instrucao_reg <= memoriaInstrucao[readAddress];
-        end
         if(reset) begin
             cont <= 0;
             instrucao_reg <= 32'b00000000000000000000000000000000;
+        end
+        else begin
+            cont = (cont+1)%10;
+            if(cont == 1) begin
+                instrucao_reg <= memoriaInstrucao[readAddress[3:0]];
+            end
         end
     end
 

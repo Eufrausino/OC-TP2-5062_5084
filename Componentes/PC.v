@@ -9,7 +9,6 @@ module PC(
     reg [3:0] cont;
     // clock e reset para sincronização do circuito e para estado de inicialização do mesmo
     always @(posedge clock) begin
-        cont = (cont + 1) % 10;
         if (reset) begin
             // Se reset for verdadeiro, então pc aponta para o endereço inicial 0x00000000
             cont = 0;
@@ -18,6 +17,7 @@ module PC(
         else begin
             // Do contrário, pc recebe o endereço da próxima instrução
             //cont = (cont + 1) % 10;
+            cont = (cont + 1) % 10;
             if (cont % 10 == 0) begin
                 endereco <= prox_instrucao;
             end

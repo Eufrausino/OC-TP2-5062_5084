@@ -12,44 +12,46 @@ module alu_control(clock, reset, aluOp, funct3, saidaAluControl);
     reg[3:0] cont;
 
     always@(posedge clock)begin
-        cont <= (cont+1)%10;
-        if(cont%10 == 4) begin
-            if(funct3 == 3'b000 | funct3 == 3'b111 | funct3 == 3'b110 | funct3 == 3'b001)begin
-                funct3_reg <= funct3;
-            end
-            //lb e sb
-            if(aluOp == 2'b00)begin
-                alu_control_reg <= 4'b0010;
-            end
-            // bne
-            else if(aluOp == 2'b01) begin
-                alu_control_reg <= 4'b0110;
-            end
-            //add, and, ori, sll
-            else if(aluOp == 2'b10) begin
-                //add
-                if(funct3_reg == 3'b000)begin
-                    alu_control_reg <= 4'b0010;
-                end 
-                //and
-                if(funct3_reg == 3'b111)begin
-                    alu_control_reg <= 4'b0000;
-                end 
-                //ori
-                if(funct3_reg == 3'b110)begin
-                    alu_control_reg <= 4'b0001;
-                end 
-                //sll
-                if(funct3_reg == 3'b000)begin
-                    alu_control_reg <= 4'b0100;
-                end 
-            end  
-        end 
         if(reset) begin
             alu_control_reg <= 4'b0000;
             funct3_reg <= 3'b000;
             cont <= 0;
         end
+        else begin
+            cont <= (cont+1)%10;
+            if(cont%10 == 5) begin
+                    if(funct3 == 3'b000 | funct3 == 3'b111 | funct3 == 3'b110 | funct3 == 3'b001)begin
+                        funct3_reg <= funct3;
+                    end
+                    //lb e sb
+                    if(aluOp == 2'b00)begin
+                        alu_control_reg <= 4'b0010;
+                    end
+                    // bne
+                    else if(aluOp == 2'b01) begin
+                        alu_control_reg <= 4'b0110;
+                    end
+                    //add, and, ori, sll
+                    else if(aluOp == 2'b10) begin
+                        //add
+                        if(funct3_reg == 3'b000)begin
+                            alu_control_reg <= 4'b0010;
+                        end 
+                        //and
+                        if(funct3_reg == 3'b111)begin
+                            alu_control_reg <= 4'b0000;
+                        end 
+                        //ori
+                        if(funct3_reg == 3'b110)begin
+                            alu_control_reg <= 4'b0001;
+                        end 
+                        //sll
+                        if(funct3_reg == 3'b001)begin
+                            alu_control_reg <= 4'b0100;
+                        end 
+                    end  
+                end 
+            end
     end 
 
     assign saidaAluControl = alu_control_reg;

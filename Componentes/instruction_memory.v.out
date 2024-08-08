@@ -1,0 +1,67 @@
+#! /usr/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "/usr/lib64/ivl/system.vpi";
+:vpi_module "/usr/lib64/ivl/vhdl_sys.vpi";
+:vpi_module "/usr/lib64/ivl/vhdl_textio.vpi";
+:vpi_module "/usr/lib64/ivl/v2005_math.vpi";
+:vpi_module "/usr/lib64/ivl/va_math.vpi";
+S_0x562229ef7470 .scope module, "instruction_memory" "instruction_memory" 2 1;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "clock";
+    .port_info 1 /INPUT 1 "reset";
+    .port_info 2 /INPUT 32 "readAddress";
+    .port_info 3 /OUTPUT 7 "instruction6_0";
+    .port_info 4 /OUTPUT 5 "instruction19_15";
+    .port_info 5 /OUTPUT 5 "instruction24_20";
+    .port_info 6 /OUTPUT 5 "instruction11_7";
+    .port_info 7 /OUTPUT 32 "instruction31_0";
+    .port_info 8 /OUTPUT 3 "instruction14_12";
+L_0x562229f45af0 .functor BUFZ 32, v0x562229f44c30_0, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+v0x562229ef76e0_0 .net *"_ivl_11", 2 0, L_0x562229f45920;  1 drivers
+v0x562229f448e0_0 .net *"_ivl_7", 4 0, L_0x562229f457b0;  1 drivers
+o0x7f345d0fa078 .functor BUFZ 1, C4<z>; HiZ drive
+v0x562229f449c0_0 .net "clock", 0 0, o0x7f345d0fa078;  0 drivers
+v0x562229f44a60_0 .net "iinstruction11_7", 0 0, L_0x562229f45880;  1 drivers
+v0x562229f44b20_0 .net "iinstruction14_12", 0 0, L_0x562229f45a00;  1 drivers
+v0x562229f44c30_0 .var "instrucao_reg", 31 0;
+o0x7f345d0fa138 .functor BUFZ 5, C4<zzzzz>; HiZ drive
+v0x562229f44d10_0 .net "instruction11_7", 4 0, o0x7f345d0fa138;  0 drivers
+o0x7f345d0fa168 .functor BUFZ 3, C4<zzz>; HiZ drive
+v0x562229f44df0_0 .net "instruction14_12", 2 0, o0x7f345d0fa168;  0 drivers
+v0x562229f44ed0_0 .net "instruction19_15", 4 0, L_0x562229f45670;  1 drivers
+v0x562229f44fb0_0 .net "instruction24_20", 4 0, L_0x562229f45710;  1 drivers
+v0x562229f45090_0 .net "instruction31_0", 31 0, L_0x562229f45af0;  1 drivers
+v0x562229f45170_0 .net "instruction6_0", 6 0, L_0x562229f455d0;  1 drivers
+v0x562229f45250 .array "memoriaInstrucao", 10 0, 31 0;
+o0x7f345d0fa258 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v0x562229f45310_0 .net "readAddress", 31 0, o0x7f345d0fa258;  0 drivers
+o0x7f345d0fa288 .functor BUFZ 1, C4<z>; HiZ drive
+v0x562229f453f0_0 .net "reset", 0 0, o0x7f345d0fa288;  0 drivers
+E_0x562229f305c0 .event posedge, v0x562229f449c0_0;
+L_0x562229f455d0 .part v0x562229f44c30_0, 0, 7;
+L_0x562229f45670 .part v0x562229f44c30_0, 15, 5;
+L_0x562229f45710 .part v0x562229f44c30_0, 20, 5;
+L_0x562229f457b0 .part v0x562229f44c30_0, 7, 5;
+L_0x562229f45880 .part L_0x562229f457b0, 0, 1;
+L_0x562229f45920 .part v0x562229f44c30_0, 12, 3;
+L_0x562229f45a00 .part L_0x562229f45920, 0, 1;
+    .scope S_0x562229ef7470;
+T_0 ;
+    %vpi_call 2 17 "$readmemb", "entrada.bin", v0x562229f45250 {0 0 0};
+    %end;
+    .thread T_0;
+    .scope S_0x562229ef7470;
+T_1 ;
+    %wait E_0x562229f305c0;
+    %ix/getv 4, v0x562229f45310_0;
+    %load/vec4a v0x562229f45250, 4;
+    %assign/vec4 v0x562229f44c30_0, 0;
+    %jmp T_1;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "instruction_memory.v";

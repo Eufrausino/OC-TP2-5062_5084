@@ -16,7 +16,7 @@ module and_module(
         else begin
             cont <= (cont + 1) % 10;
             //Do contrário, ocorrerá a operação lógica entre a entrada do sinal branch e saída 0 da ALU
-            if(cont == 5) begin   
+            if(cont == 4) begin   
              AND <= branch & alu_0;
             end
         end

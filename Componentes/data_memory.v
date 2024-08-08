@@ -16,18 +16,20 @@ module data_memory(clock, reset, memWrite, memRead, address, writeData, readData
     end
 
     always @(posedge clock) begin
-        cont = (cont+1)%10;
-        if(cont%10 == 5) begin
-            if(memWrite == 1'b1) begin
-                memoria[address] <= writeData;
-            end
-            else if(memRead == 1'b1) begin
-                readData_reg <= memoria[address];
-            end
-        end
         if(reset) begin
-            cont <=0;
+            cont <= 0;
             readData_reg <= 32'b00000000000000000000000000000000;
+        end
+        else begin
+            cont = (cont+1)%10;
+            if(cont%10 == 8) begin
+                if(memWrite == 1'b1) begin
+                    memoria[address[5:0]] <= writeData;
+                end
+                else if(memRead == 1'b1) begin
+                    readData_reg <= memoria[address[5:0]];
+                end
+            end
         end
     end
 
